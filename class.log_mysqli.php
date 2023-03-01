@@ -1,33 +1,4 @@
 <?php
-/*class log_mysqli extends mysqli {
-    public $qcounter = 0;
-	public $deb = false;
-	public $name = "";
-	private $patch = "";
-
-	public function debug($debug = false, $name = NULL) {
-		$this->deb = $debug;
-		$this->name = $name;
-		$this->patch = "/var/www/log/SQLog.".$this->name."_".date("ymd").".cache";
-		if ($this->deb)
-			file_put_contents($this->patch, "\n", FILE_APPEND);
-	}
-
-    public function query($sql) {
-		$this->qcounter++;
-
-		if ($this->deb)
-			file_put_contents($this->patch, date("H:i:s")."\t".$sql."\n", FILE_APPEND);
-
-        return parent::query($sql);
-    }
-
-	public function getCounter() {
-		return $this->qcounter;
-	}
-}
-*/
-
 class log_mysqli extends mysqli {
     public $qcounter = 0;
     public $deb = false;
@@ -56,15 +27,6 @@ class log_mysqli extends mysqli {
 		if ($this->deb) {
             file_put_contents($this->patch, $log_entry, FILE_APPEND | LOCK_EX);
         }
-		/*
-        if ($this->deb) {
-            file_put_contents($this->patch, date("H:i:s")."\t".$sql."\n", FILE_APPEND);
-        }
-		*/
-        /*if ($this->log_file !== null) {
-            $log_entry = date('Y-m-d H:i:s') . "\nQuery: {$sql}\n";
-            file_put_contents($this->log_file, $log_entry, FILE_APPEND | LOCK_EX);
-        }*/
 
         return $result;
     }
@@ -79,7 +41,7 @@ class log_mysqli extends mysqli {
 }
 
 class LogMySQLiStatement extends mysqli_stmt {
-    private $log_file; // nazwa pliku, do którego będą zapisywane zapytania
+    private $log_file;
 	private $deb = false;
 	private $query;
 
@@ -107,7 +69,34 @@ class LogMySQLiStatement extends mysqli_stmt {
     }
 }
 
+/*
+// old
+class log_mysqli extends mysqli {
+    public $qcounter = 0;
+	public $deb = false;
+	public $name = "";
+	private $patch = "";
 
+	public function debug($debug = false, $name = NULL) {
+		$this->deb = $debug;
+		$this->name = $name;
+		$this->patch = "/var/www/log/SQLog.".$this->name."_".date("ymd").".cache";
+		if ($this->deb)
+			file_put_contents($this->patch, "\n", FILE_APPEND);
+	}
 
+    public function query($sql) {
+		$this->qcounter++;
 
+		if ($this->deb)
+			file_put_contents($this->patch, date("H:i:s")."\t".$sql."\n", FILE_APPEND);
+
+        return parent::query($sql);
+    }
+
+	public function getCounter() {
+		return $this->qcounter;
+	}
+}
+*/
 ?>
